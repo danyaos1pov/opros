@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ON1X VPN — Отзывы</title>
-    <!-- Добавлен Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
+            /* Темная тема — Необрутализм (Графит + Токсичный лайм) */
             --bg-main: #0b0f17;
             --card-bg: #1e293b;
             --card-border: #000000;
@@ -15,14 +15,17 @@
             --text-title: #ffffff;
             --text-body: #f8fafc;
             --text-sub: #94a3b8;
-            --btn-primary-bg: #ccff00;
+            
+            --btn-primary-bg: #ccff00; /* Яркий акцент */
             --btn-primary-text: #000000;
             --btn-secondary-bg: #0f172a;
             --btn-secondary-border: #000000;
+            
             --slider-bg: #1e293b;
             --slider-thumb: #ccff00;
             --icon-color: #ffffff;
-            --star-filled: #ccff00;
+            
+            --star-filled: #ccff00; /* Лайм в темной теме */
             --star-empty: transparent;
             --input-bg: #0f172a;
             --admin-red: #ff4d4d;
@@ -30,6 +33,7 @@
         }
 
         [data-theme="light"] {
+            /* Светлая тема — Газетный брутализм */
             --bg-main: #f1f5f9;
             --card-bg: #ffffff;
             --card-border: #000000;
@@ -37,6 +41,7 @@
             --text-title: #000000;
             --text-body: #0f172a;
             --text-sub: #64748b;
+            
             --btn-primary-bg: #000000;
             --btn-primary-text: #ffffff;
             --btn-secondary-bg: #f8fafc;
@@ -44,68 +49,427 @@
             --slider-bg: #ffffff;
             --slider-thumb: #000000;
             --icon-color: #000000;
-            --star-filled: #000000;
+            
+            --star-filled: #000000; /* Черный в светлой теме */
             --star-empty: transparent;
             --input-bg: #f8fafc;
             --admin-red: #d32f2f;
             --success-green: #27ae60;
         }
 
-        body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-color: var(--bg-main); color: var(--text-body); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 40px 24px; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: background 0.3s ease; }
-        input, textarea { user-select: text !important; -webkit-user-select: text !important; }
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        /* Защита от копирования */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 24px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: background 0.3s ease;
+        }
 
-        .theme-container { display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 40px; }
-        .theme-switch { position: relative; width: 76px; height: 38px; background: var(--slider-bg); border: 2px solid var(--card-border); border-radius: 0px; box-shadow: 3px 3px 0px var(--shadow-color); cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: space-between; transition: background 0.3s ease; }
-        .theme-checkbox { display: none; }
-        .switch-icon { width: 18px; height: 18px; fill: none; stroke: var(--icon-color); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; z-index: 1; transition: stroke 0.3s ease; margin: 0 4px; }
-        .theme-handle { position: absolute; left: 4px; width: 26px; height: 26px; background-color: var(--slider-thumb); border: 2px solid var(--card-border); transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index: 2; }
-        .theme-checkbox:checked + .theme-switch .theme-handle { transform: translateX(38px); }
+        input, textarea {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
 
-        .container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 28px; }
-        .brand-header { text-align: center; }
-        .brand-title { font-size: 42px; font-weight: 900; letter-spacing: -1px; color: var(--text-title); text-transform: uppercase; -webkit-text-stroke: 1px var(--card-border); }
-        .brand-slogan { display: inline-block; font-size: 12px; background: var(--btn-primary-bg); color: var(--btn-primary-text); border: 2px solid var(--card-border); padding: 2px 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; box-shadow: 2px 2px 0px var(--shadow-color); }
-        
-        .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .stat-card { background: var(--card-bg); border: 3px solid var(--card-border); padding: 16px; text-align: center; box-shadow: 4px 4px 0px var(--shadow-color); }
-        .stat-card h2 { font-size: 32px; font-weight: 900; color: var(--text-title); line-height: 1; margin-bottom: 4px; -webkit-text-stroke: 1px var(--card-border); }
-        .stat-card p { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        .section-box { background: var(--card-bg); border: 3px solid var(--card-border); border-radius: 0px; padding: 20px 16px 16px 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 8px 8px 0px var(--shadow-color); position: relative; }
-        .reviews-grid { display: flex; flex-direction: column; gap: 24px; }
-        
-        .stars-row { display: flex; gap: 4px; align-items: center; }
-        .brutal-star { width: 20px; height: 20px; }
-        .brutal-star path { stroke: #000000; stroke-width: 2px; stroke-linejoin: miter; transition: fill 0.3s ease; }
-        .brutal-star.filled path { fill: var(--star-filled); }
-        .brutal-star.empty path { fill: var(--star-empty); }
-        
-        .review-text { font-size: 14px; line-height: 1.5; color: var(--text-body); word-wrap: break-word; }
-        .read-more-btn { background: none; border: none; color: var(--text-title); font-size: 13px; font-weight: 800; cursor: pointer; text-align: left; text-decoration: underline; margin-top: -6px; text-transform: uppercase; }
-        
-        .user-meta { display: flex; align-items: center; gap: 12px; border-top: 2px dashed var(--card-border); padding-top: 12px; margin-top: 4px; }
-        .avatar { width: 32px; height: 32px; background: var(--btn-primary-bg); border: 2px solid var(--card-border); color: var(--btn-primary-text); display: grid; place-items: center; font-weight: 900; font-size: 14px; }
-        .username { display: flex; flex-direction: column; font-weight: 800; font-size: 14px; color: var(--text-title); }
-        .review-date { font-size: 11px; color: var(--text-sub); font-weight: 500; margin-top: 1px; }
+        /* Переключатель темы */
+        .theme-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+        }
 
-        .admin-reply { margin-top: 4px; padding: 12px; background: var(--btn-secondary-bg); border: 2px solid var(--btn-secondary-border); box-shadow: 4px 4px 0px var(--admin-red); }
-        .admin-tag { font-size: 10px; font-weight: 900; color: var(--admin-red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: block; }
-        .admin-text { font-size: 13px; color: var(--text-body); line-height: 1.4; }
+        .theme-switch {
+            position: relative;
+            width: 76px;
+            height: 38px;
+            background: var(--slider-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 0px; 
+            box-shadow: 3px 3px 0px var(--shadow-color);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s ease;
+        }
 
-        .btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px 20px; font-size: 16px; font-weight: 800; text-decoration: none; border: 2px solid var(--card-border); position: relative; box-shadow: 4px 4px 0px var(--shadow-color); cursor: pointer; transition: transform 0.1s ease, box-shadow 0.1s ease; }
-        .btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--shadow-color); }
-        .btn-primary { background: var(--btn-primary-bg); color: var(--btn-primary-text); }
-        
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 14px 24px; font-weight: 800; font-size: 14px; text-transform: uppercase; border: 3px solid #000; z-index: 9999; display: none; box-shadow: 4px 4px 0px var(--shadow-color); text-align: center; }
+        .theme-checkbox {
+            display: none;
+        }
+
+        .switch-icon {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--icon-color);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            z-index: 1;
+            transition: stroke 0.3s ease;
+            margin: 0 4px;
+        }
+
+        .theme-handle {
+            position: absolute;
+            left: 4px;
+            width: 26px;
+            height: 26px;
+            background-color: var(--slider-thumb);
+            border: 2px solid var(--card-border);
+            transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 2;
+        }
+
+        .theme-checkbox:checked + .theme-switch .theme-handle {
+            transform: translateX(38px);
+        }
+
+        /* Контейнер */
+        .container {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Шапка */
+        .brand-header {
+            text-align: center;
+        }
+
+        .brand-title {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--text-title);
+            text-transform: uppercase;
+            -webkit-text-stroke: 1px var(--card-border);
+        }
+
+        .brand-slogan {
+            display: inline-block;
+            font-size: 12px;
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+            border: 2px solid var(--card-border);
+            padding: 2px 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+            box-shadow: 2px 2px 0px var(--shadow-color);
+        }
+
+        /* Статистика */
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
+            padding: 16px;
+            text-align: center;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+        }
+
+        .stat-card h2 {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-title);
+            line-height: 1;
+            margin-bottom: 4px;
+            -webkit-text-stroke: 1px var(--card-border);
+        }
+
+        [data-theme="light"] .stat-card h2 {
+            -webkit-text-stroke: 0px;
+        }
+
+        .stat-card p {
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-sub);
+        }
+
+        /* Жесткие брутальные блоки */
+        .section-box {
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
+            border-radius: 0px;
+            padding: 20px 16px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 8px 8px 0px var(--shadow-color);
+            position: relative;
+        }
+
+        /* Сетка отзывов */
+        .reviews-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Мощные SVG Звезды */
+        .stars-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .brutal-star {
+            width: 20px;
+            height: 20px;
+        }
+
+        .brutal-star path {
+            stroke: #000000;
+            stroke-width: 2px;
+            stroke-linejoin: miter;
+            transition: fill 0.3s ease;
+        }
+
+        .brutal-star.filled path {
+            fill: var(--star-filled);
+        }
+
+        .brutal-star.empty path {
+            fill: var(--star-empty);
+        }
+
+        .review-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-body);
+            word-wrap: break-word;
+        }
+
+        /* Кнопка Читать полностью */
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: var(--text-title);
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: left;
+            text-decoration: underline;
+            margin-top: -6px;
+            text-transform: uppercase;
+        }
+
+        /* Мета-данные пользователя */
+        .user-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-top: 2px dashed var(--card-border);
+            padding-top: 12px;
+            margin-top: 4px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--btn-primary-bg);
+            border: 2px solid var(--card-border);
+            color: var(--btn-primary-text);
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .username {
+            display: flex;
+            flex-direction: column;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--text-title);
+        }
+
+        .review-date {
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 500;
+            margin-top: 1px;
+        }
+
+        /* Ответ админа */
+        .admin-reply {
+            margin-top: 4px;
+            padding: 12px;
+            background: var(--btn-secondary-bg);
+            border: 2px solid var(--btn-secondary-border);
+            box-shadow: 4px 4px 0px var(--admin-red);
+        }
+
+        .admin-tag {
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--admin-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .admin-text {
+            font-size: 13px;
+            color: var(--text-body);
+            line-height: 1.4;
+        }
+
+        /* Кнопки */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: 2px solid var(--card-border);
+            position: relative;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--shadow-color);
+        }
+
+        .btn-primary {
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+        }
+
+        /* Брутальные Тосты */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 24px;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            border: 3px solid #000;
+            z-index: 9999;
+            display: none;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            text-align: center;
+            white-space: nowrap;
+        }
         .toast.show { display: block; }
         .toast.error { background: var(--admin-red); color: #fff; }
         .toast.success { background: var(--success-green); color: #fff; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(11, 15, 23, 0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 24px; }
-        .modal { background: var(--card-bg); width: 100%; max-width: 340px; padding: 24px; border: 3px solid var(--card-border); position: relative; box-shadow: 8px 8px 0px var(--shadow-color); }
-        .close-modal { position: absolute; top: 12px; right: 16px; font-size: 28px; font-weight: 900; color: var(--text-sub); cursor: pointer; }
-        input, textarea { width: 100%; background: var(--input-bg); border: 2px solid var(--card-border); padding: 12px; color: var(--text-body); margin-bottom: 14px; outline: none; font-size: 15px; border-radius: 0px; }
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 15, 23, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 24px;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 340px;
+            padding: 24px;
+            border: 3px solid var(--card-border);
+            position: relative;
+            box-shadow: 8px 8px 0px var(--shadow-color);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-sub);
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .star-selection-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .rating-num {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text-title);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .star-picker {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+        
+        /* Стилизация SVG внутри пикера */
+        .star-picker .brutal-star {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .star-picker .brutal-star:hover {
+            transform: scale(1.15);
+        }
+
+        /* Инпуты */
+        input, textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 2px solid var(--card-border);
+            padding: 12px;
+            color: var(--text-body);
+            margin-bottom: 14px;
+            outline: none;
+            font-size: 15px;
+            border-radius: 0px;
+        }
+        input:focus, textarea:focus {
+            border-color: var(--btn-primary-bg);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -144,6 +508,13 @@
     <div class="modal-overlay" id="overlay">
         <div class="modal">
             <span class="close-modal" id="closeBtn">&times;</span>
+            <h2 style="font-size: 14px; font-weight: 900; text-align: center; margin-bottom: 12px; text-transform: uppercase; color: var(--text-title);">Ваша оценка</h2>
+            
+            <div class="star-selection-area">
+                <span class="rating-num" id="ratingDisplay">5 / 5</span>
+                <div class="star-picker" id="starPicker"></div>
+            </div>
+            
             <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
             <input type="text" id="contactInp" placeholder="ID или @username" autocomplete="off">
             <textarea id="msgInp" rows="4" placeholder="Напишите ваш отзыв..."></textarea>
@@ -152,72 +523,193 @@
     </div>
 
     <script>
+        // Функция генерации брутальной SVG звезды
+        function getStarSvg(isFilled) {
+            return `
+                <svg class="brutal-star ${isFilled ? 'filled' : 'empty'}" viewBox="0 0 24 24">
+                    <path d="M12 1.7l3.09 6.26L22 8.9l-5 4.87L18.18 22 12 18.75 5.82 22 7 13.77 2 8.9l6.91-.94L12 1.7z"/>
+                </svg>
+            `;
+        }
+
+        function getStarsRowHtml(starsCount) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += getStarSvg(i <= starsCount);
+            }
+            return html;
+        }
+
+        // Логика тем
+        const themeInput = document.getElementById('themeInput');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeInput.checked = true;
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeInput.checked = false;
+        }
+
+        themeInput.addEventListener('change', () => {
+            if (themeInput.checked) {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Supabase
         const SB_URL = 'https://yvnnngfzzjdbeiscwluy.supabase.co';
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bm5uZ2Z6empkYmVpc2N3bHV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzY2ODYsImV4cCI6MjA5MDA1MjY4Nn0.SesGG2QhbJKfAklZDiL8oolWQ6qaTtBwRL_tvigpd9A';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
         
         const grid = document.getElementById('grid');
         const overlay = document.getElementById('overlay');
-        const contactInp = document.getElementById('contactInp');
-        
-        // Авто-распознавание Telegram и фиксация ID
+        const closeBtn = document.getElementById('closeBtn');
+        const toast = document.getElementById('toast');
+        const ratingDisplay = document.getElementById('ratingDisplay');
+        const starPicker = document.getElementById('starPicker');
+        const contactInp = document.getElementById('contactInp'); // Получаем поле ID
+        let currentStars = 5;
+
+        // Автоматическая подстановка Telegram ID
         const tg = window.Telegram?.WebApp;
         if (tg?.initDataUnsafe?.user) {
-            document.getElementById('nameInp').value = tg.initDataUnsafe.user.first_name;
-            contactInp.value = tg.initDataUnsafe.user.id;
-            contactInp.readOnly = true; // Запрет на изменение
-            contactInp.style.opacity = "0.7";
+            document.getElementById('nameInp').value = tg.initDataUnsafe.user.first_name || '';
+            contactInp.value = tg.initDataUnsafe.user.id || '';
+            contactInp.readOnly = true; // Фиксация поля
         }
 
-        function getStarSvg(isFilled) {
-            return `<svg class="brutal-star ${isFilled ? 'filled' : 'empty'}" viewBox="0 0 24 24"><path d="M12 1.7l3.09 6.26L22 8.9l-5 4.87L18.18 22 12 18.75 5.82 22 7 13.77 2 8.9l6.91-.94L12 1.7z"/></svg>`;
+        // Защита исходного кода
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 80)) e.preventDefault();
+            if (e.keyCode === 123) e.preventDefault();
+        });
+
+        function showNotification(text, type) {
+            toast.textContent = text;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
+
+        window.expandText = (btn, id) => {
+            const textEl = document.getElementById(`text-${id}`);
+            textEl.innerText = btn.getAttribute('data-full');
+            btn.remove();
+        };
+
+        const openModal = () => { overlay.style.display = 'flex'; };
+        const closeModal = () => { overlay.style.display = 'none'; };
+
+        document.getElementById('addBtn').addEventListener('pointerdown', openModal);
+        closeBtn.addEventListener('pointerdown', closeModal);
+        overlay.addEventListener('pointerdown', (e) => { if(e.target === overlay) closeModal(); });
+
+        // Инициализация пикера
+        function initPicker() {
+            starPicker.innerHTML = Array.from({length: 5}, (_, i) => getStarSvg(i < currentStars)).join('');
+            ratingDisplay.innerText = `${currentStars} / 5`;
+            
+            const pickerStars = starPicker.querySelectorAll('.brutal-star');
+            pickerStars.forEach((s, idx) => {
+                s.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    currentStars = idx + 1;
+                    initPicker();
+                });
+            });
+        }
+        initPicker();
+
+        // Быстрый рендер из кэша
+        const cached = localStorage.getItem('reviews_cache');
+        if (cached) render(JSON.parse(cached));
 
         async function fetchReviews() {
-            let { data } = await supabaseClient.from('reviews').select('*').in('proverka', [1, 2]).order('created_at', { ascending: false });
-            if (data) render(data);
+            try {
+                let { data: reviews, error } = await supabaseClient
+                    .from('reviews')
+                    .select('id, name, msg, stars, created_at, admin, proverka')
+                    .in('proverka', [1, 2])
+                    .order('created_at', { ascending: false });
+                if (!error && reviews) {
+                    localStorage.setItem('reviews_cache', JSON.stringify(reviews));
+                    render(reviews);
+                }
+            } catch (e) { console.error(e); }
         }
 
         function render(data) {
+            if (!data) return;
             grid.innerHTML = data.map((r) => {
-                const date = new Date(r.created_at).toLocaleDateString('ru-RU');
-                const source = r.source ? ` • ${r.source}` : '';
+                const isLong = r.msg.length > 200;
+                const displayMsg = isLong ? r.msg.substring(0, 200) + '...' : r.msg;
+                
+                const dateObj = new Date(r.created_at);
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const year = dateObj.getFullYear();
+                const fullDate = `${day}.${month}.${year}`;
+
                 return `
                 <div class="section-box">
-                    <div class="stars-row">${Array.from({length: 5}, (_, i) => getStarSvg(i < r.stars)).join('')}</div>
-                    <p class="review-text">${r.msg}</p>
+                    <div class="stars-row">${getStarsRowHtml(r.stars)}</div>
+                    <p class="review-text" id="text-${r.id}">${displayMsg}</p>
+                    ${isLong ? `<button class="read-more-btn" data-full="${r.msg.replace(/"/g, '&quot;')}" onclick="expandText(this, '${r.id}')">Читать полностью</button>` : ''}
+                    
                     <div class="user-meta">
                         <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
                         <div class="username">
                             <span>${r.name}</span>
-                            <span class="review-date">${date}${source}</span>
+                            <span class="review-date">${fullDate}</span>
                         </div>
                     </div>
+                    ${r.admin ? `
+                        <div class="admin-reply">
+                            <span class="admin-tag">Ответ администратора</span>
+                            <div class="admin-text">${r.admin}</div>
+                        </div>
+                    ` : ''}
                 </div>`;
             }).join('');
+            updateStats(data);
+        }
+
+        function updateStats(data) {
+            const rOnly = data.filter(r => r.proverka === 1);
+            const avg = rOnly.length > 0 ? (rOnly.reduce((s, r) => s + r.stars, 0) / rOnly.length).toFixed(1) : "0.0";
+            document.getElementById('avgRating').innerText = avg;
+            document.getElementById('totalCount').innerText = data.length;
         }
 
         document.getElementById('saveBtn').addEventListener('pointerdown', async () => {
             const name = document.getElementById('nameInp').value.trim();
             const contact = contactInp.value.trim();
             const msg = document.getElementById('msgInp').value.trim();
-            const source = tg?.initDataUnsafe?.user ? 'Telegram' : 'Сайт';
             
-            if(!name || !msg) return;
-            await supabaseClient.from('reviews').insert([{ 
+            if(!name || !msg) { showNotification("Заполните все поля", "error"); return; }
+            
+            const { error } = await supabaseClient.from('reviews').insert([{ 
                 name, 
-                contact, 
+                contact: contact || null, 
                 msg, 
-                stars: 5, 
-                source, 
+                stars: currentStars, 
                 proverka: 0 
             }]);
-            overlay.style.display = 'none';
-            alert("Отправлено на модерацию!");
+      
+            if (!error) {
+                closeModal();
+                document.getElementById('nameInp').value = '';
+                // contactInp не сбрасываем, если он пришел из TG, либо можно сбросить, если нужно новое заполнение
+                document.getElementById('msgInp').value = '';
+                showNotification("Отправлено на модерацию", "success");
+            } else { showNotification("Ошибка сервера", "error"); }
         });
 
-        document.getElementById('addBtn').addEventListener('pointerdown', () => overlay.style.display = 'flex');
-        document.getElementById('closeBtn').addEventListener('pointerdown', () => overlay.style.display = 'none');
         fetchReviews();
     </script>
 </body>
