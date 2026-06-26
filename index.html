@@ -3,475 +3,698 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Опрос качества сервиса</title>
-
+    <title>ON1X VPN — Отзывы</title>
+    <!-- Добавлен Telegram WebApp -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* --- БАЗОВЫЕ СТИЛИ И ТЕМНАЯ ТЕМА --- */
+        :root {
+            /* Темная тема — Необрутализм (Графит + Токсичный лайм) */
+            --bg-main: #0b0f17;
+            --card-bg: #1e293b;
+            --card-border: #000000;
+            --shadow-color: #000000;
+            --text-title: #ffffff;
+            --text-body: #f8fafc;
+            --text-sub: #94a3b8;
+            
+            --btn-primary-bg: #ccff00; /* Яркий акцент */
+            --btn-primary-text: #000000;
+            --btn-secondary-bg: #0f172a;
+            --btn-secondary-border: #000000;
+            
+            --slider-bg: #1e293b;
+            --slider-thumb: #ccff00;
+            --icon-color: #ffffff;
+            
+            --star-filled: #ccff00; /* Лайм в темной теме */
+            --star-empty: transparent;
+            --input-bg: #0f172a;
+            --admin-red: #ff4d4d;
+            --success-green: #2ecc71;
+        }
+
+        [data-theme="light"] {
+            /* Светлая тема — Газетный брутализм */
+            --bg-main: #f1f5f9;
+            --card-bg: #ffffff;
+            --card-border: #000000;
+            --shadow-color: #000000;
+            --text-title: #000000;
+            --text-body: #0f172a;
+            --text-sub: #64748b;
+            
+            --btn-primary-bg: #000000;
+            --btn-primary-text: #ffffff;
+            --btn-secondary-bg: #f8fafc;
+            --btn-secondary-border: #000000;
+            
+            --slider-bg: #ffffff;
+            --slider-thumb: #000000;
+            --icon-color: #000000;
+            
+            --star-filled: #000000; /* Черный в светлой теме */
+            --star-empty: transparent;
+            --input-bg: #f8fafc;
+            --admin-red: #d32f2f;
+            --success-green: #27ae60;
+        }
+
+        /* Защита от копирования */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 24px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: background 0.3s ease;
+        }
+
+        input, textarea {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
-            background: #0f1015;
-            min-height: 100vh;
+        /* Переключатель темы */
+        .theme-container {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            padding: 24px 16px;
-            color: #ffffff;
-        }
-
-        .survey-wrapper {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .survey-header-block {
-            text-align: center;
-            margin-bottom: 8px;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-        }
-
-        .survey-logo {
-            max-width: 120px;
-            height: auto;
-            margin-bottom: 16px;
-            display: block;
-            object-fit: contain;
-        }
-
-        .survey-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 6px;
-        }
-
-        .survey-subtitle {
-            font-size: 14px;
-            color: #aeaeb2;
-            line-height: 1.4;
-            padding: 0 8px;
-        }
-
-        /* --- КАРТОЧКИ ВОПРОСОВ --- */
-        .question-card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 20px;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
         }
 
-        .question-card.error-highlight {
-            border-color: #ff3b30 !important;
-            box-shadow: 0 0 15px rgba(255, 59, 48, 0.2);
-        }
-
-        .question-text {
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.4;
-            margin-bottom: 16px;
-            color: #f5f5f7;
-        }
-
-        .question-card:has(.sub-text) .question-text {
-            margin-bottom: 10px;
-        }
-
-        .required-star {
-            color: #ff3b30;
-            margin-left: 2px;
-        }
-
-        .sub-text {
-            font-size: 13px;
-            color: #aeaeb2;
-            line-height: 1.4;
-            margin-bottom: 14px;
-        }
-
-        /* --- СЕТКИ ВАРИАНТОВ --- */
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            width: 100%;
-        }
-
-        .options-rating {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            width: 100%;
-        }
-
-        .rating-with-extra {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-
-        /* --- ПЛАШКИ-КНОПКИ --- */
-        .option-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-            padding: 14px 16px;
-            color: #e5e5ea;
-            font-size: 14px;
-            font-weight: 500;
+        .theme-switch {
+            position: relative;
+            width: 76px;
+            height: 38px;
+            background: var(--slider-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 0px; 
+            box-shadow: 3px 3px 0px var(--shadow-color);
             cursor: pointer;
-            transition: background 0.15s, border-color 0.15s, color 0.15s;
-            line-height: 1.3;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s ease;
+        }
+
+        .theme-checkbox {
+            display: none;
+        }
+
+        .switch-icon {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--icon-color);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            z-index: 1;
+            transition: stroke 0.3s ease;
+            margin: 0 4px;
+        }
+
+        .theme-handle {
+            position: absolute;
+            left: 4px;
+            width: 26px;
+            height: 26px;
+            background-color: var(--slider-thumb);
+            border: 2px solid var(--card-border);
+            transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 2;
+        }
+
+        .theme-checkbox:checked + .theme-switch .theme-handle {
+            transform: translateX(38px);
+        }
+
+        /* Контейнер */
+        .container {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Шапка */
+        .brand-header {
             text-align: center;
-            user-select: none;
         }
 
-        .options-list .option-label {
-            justify-content: flex-start;
-            text-align: left;
+        .brand-title {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--text-title);
+            text-transform: uppercase;
+            -webkit-text-stroke: 1px var(--card-border);
         }
 
-        .option-label.selected {
-            background: rgba(0, 255, 204, 0.08) !important;
-            border: 1px solid #00ffcc !important;
-            color: #00ffcc !important;
+        .brand-slogan {
+            display: inline-block;
+            font-size: 12px;
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+            border: 2px solid var(--card-border);
+            padding: 2px 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+            box-shadow: 2px 2px 0px var(--shadow-color);
         }
 
-        /* --- ПОЛЕ ВВОДА ОТЗЫВА --- */
-        .text-input {
-            width: 100%;
-            min-height: 100px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-            padding: 14px;
-            color: #ffffff;
-            font-size: 14px;
-            line-height: 1.4;
-            resize: vertical;
-            outline: none;
-            transition: border-color 0.2s;
+        /* Статистика */
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
         }
 
-        .text-input:focus {
-            border-color: #00ffcc;
-        }
-
-        /* --- ГЛАВНАЯ КНОПКА --- */
-        .submit-btn {
-            width: 100%;
-            background: #ffffff;
-            color: #0f1015;
-            border: none;
-            border-radius: 14px;
+        .stat-card {
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
             padding: 16px;
-            font-size: 15px;
-            font-weight: 600;
+            text-align: center;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+        }
+
+        .stat-card h2 {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-title);
+            line-height: 1;
+            margin-bottom: 4px;
+            -webkit-text-stroke: 1px var(--card-border);
+        }
+
+        [data-theme="light"] .stat-card h2 {
+            -webkit-text-stroke: 0px;
+        }
+
+        .stat-card p {
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-sub);
+        }
+
+        /* Жесткие брутальные блоки */
+        .section-box {
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
+            border-radius: 0px;
+            padding: 20px 16px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 8px 8px 0px var(--shadow-color);
+            position: relative;
+        }
+
+        /* Сетка отзывов */
+        .reviews-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Мощные SVG Звезды */
+        .stars-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .brutal-star {
+            width: 20px;
+            height: 20px;
+        }
+
+        .brutal-star path {
+            stroke: #000000;
+            stroke-width: 2px;
+            stroke-linejoin: miter;
+            transition: fill 0.3s ease;
+        }
+
+        .brutal-star.filled path {
+            fill: var(--star-filled);
+        }
+
+        .brutal-star.empty path {
+            fill: var(--star-empty);
+        }
+
+        .review-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-body);
+            word-wrap: break-word;
+        }
+
+        /* Кнопка Читать полностью */
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: var(--text-title);
+            font-size: 13px;
+            font-weight: 800;
             cursor: pointer;
-            transition: background 0.2s, opacity 0.2s;
-            margin-top: 8px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            text-decoration: underline;
+            margin-top: -6px;
+            text-transform: uppercase;
         }
 
-        .submit-btn:hover {
-            background: #e5e5ea;
+        /* Мета-данные пользователя */
+        .user-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-top: 2px dashed var(--card-border);
+            padding-top: 12px;
+            margin-top: 4px;
         }
 
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--btn-primary-bg);
+            border: 2px solid var(--card-border);
+            color: var(--btn-primary-text);
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 14px;
         }
 
-        /* --- МОДАЛЬНОЕ ОКНО --- */
+        .username {
+            display: flex;
+            flex-direction: column;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--text-title);
+        }
+
+        .review-date {
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 500;
+            margin-top: 1px;
+        }
+
+        /* Ответ админа */
+        .admin-reply {
+            margin-top: 4px;
+            padding: 12px;
+            background: var(--btn-secondary-bg);
+            border: 2px solid var(--btn-secondary-border);
+            box-shadow: 4px 4px 0px var(--admin-red);
+        }
+
+        .admin-tag {
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--admin-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .admin-text {
+            font-size: 13px;
+            color: var(--text-body);
+            line-height: 1.4;
+        }
+
+        /* Кнопки */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: 2px solid var(--card-border);
+            position: relative;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--shadow-color);
+        }
+
+        .btn-primary {
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+        }
+
+        /* Брутальные Тосты */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 24px;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            border: 3px solid #000;
+            z-index: 9999;
+            display: none;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .toast.show { display: block; }
+        .toast.error { background: var(--admin-red); color: #fff; }
+        .toast.success { background: var(--success-green); color: #fff; }
+
+        /* Модальное окно */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 16, 21, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: flex;
+            inset: 0;
+            background: rgba(11, 15, 23, 0.85);
+            display: none;
             justify-content: center;
             align-items: center;
-            padding: 20px;
             z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            padding: 24px;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-card {
-            background: #161820;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 32px 24px;
+        .modal {
+            background: var(--card-bg);
             width: 100%;
-            max-width: 400px;
+            max-width: 340px;
+            padding: 24px;
+            border: 3px solid var(--card-border);
+            position: relative;
+            box-shadow: 8px 8px 0px var(--shadow-color);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-sub);
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .star-selection-area {
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            margin-bottom: 20px;
         }
-
-        .modal-overlay.active .modal-card {
-            transform: scale(1);
-        }
-
-        .modal-icon {
-            font-size: 40px;
-            margin-bottom: 16px;
+        .rating-num {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text-title);
+            margin-bottom: 10px;
             display: block;
         }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #ffffff;
+        .star-picker {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+        
+        /* Стилизация SVG внутри пикера */
+        .star-picker .brutal-star {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .star-picker .brutal-star:hover {
+            transform: scale(1.15);
         }
 
-        .modal-text {
+        /* Инпуты */
+        input, textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 2px solid var(--card-border);
+            padding: 12px;
+            color: var(--text-body);
+            margin-bottom: 14px;
+            outline: none;
             font-size: 15px;
-            color: #e5e5ea;
-            line-height: 1.5;
-            margin-bottom: 24px;
+            border-radius: 0px;
         }
-
-        @media (max-width: 480px) {
-            body { padding: 16px 12px; }
-            .survey-wrapper { gap: 12px; }
-            .survey-logo { max-width: 100px; margin-bottom: 12px; }
-            .question-card { padding: 16px 14px; border-radius: 14px; }
-            .question-text { font-size: 15px; margin-bottom: 10px; }
-            .sub-text { font-size: 12px; margin-bottom: 12px; }
-            .option-label { padding: 12px 10px; font-size: 13px; border-radius: 10px; }
-            .options-rating { gap: 6px; }
-            .submit-btn { padding: 14px; font-size: 14px; }
+        input:focus, textarea:focus {
+            border-color: var(--btn-primary-bg);
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-    <div class="survey-wrapper" id="survey-form">
-        <div class="survey-header-block">
-            <img src="https://psv4.userapi.com/s/v1/d2/KoD94dQwthexsHnRmBCYhlZXQj9yGEAA_twxJ2_FALhUBZuaW4c4s1s4dRrdw7Pmbq1igWroKbzrH8g_kz6hjn-SAJshfM0Lw0tMQ922F9fwwSZpwKgi4xb8nnl3uTnm9OzHs9e0AeA3/logo.png" alt="Logo" class="survey-logo">
-            <h1 class="survey-title">Опрос качества</h1>
-            <p class="survey-subtitle">Отвечая на вопросы ниже - вы помогаете нам стать лучше</p>
-        </div>
-        
-        <!-- Вопрос 1 -->
-        <div class="question-card" data-required="true" data-id="q1">
-            <div class="question-text">1. Есть ли у вас платная подписка на наш сервис?<span class="required-star">*</span></div>
-            <div class="options-grid">
-                <div class="option-label">Да</div>
-                <div class="option-label">Нет</div>
-            </div>
-        </div>
-
-        <!-- Вопрос 2 -->
-        <div class="question-card" data-required="true" data-id="q2">
-            <div class="question-text">2. Оцените работу поддержки, если вы в нее обращались<span class="required-star">*</span></div>
-            <div class="sub-text">Где 5⭐️ - отлично</div>
-            <div class="rating-with-extra">
-                <div class="options-rating">
-                    <div class="option-label">1⭐️</div>
-                    <div class="option-label">2⭐️</div>
-                    <div class="option-label">3⭐️</div>
-                    <div class="option-label">4⭐️</div>
-                    <div class="option-label">5⭐️</div>
-                </div>
-                <div class="option-label">Я не обращался(ась)</div>
-            </div>
-        </div>
-
-        <!-- Вопрос 3 -->
-        <div class="question-card" data-required="true" data-id="q3">
-            <div class="question-text">3. Планируете продлевать свою подписку?<span class="required-star">*</span></div>
-            <div class="options-grid">
-                <div class="option-label">Да</div>
-                <div class="option-label">Нет</div>
-            </div>
-        </div>
-
-        <!-- Вопрос 4 -->
-        <div class="question-card" data-required="true" data-id="q4">
-            <div class="question-text">4. Насколько вы довольны нашим сервисом?<span class="required-star">*</span></div>
-            <div class="sub-text">Где 5⭐️ - отлично</div>
-            <div class="options-rating">
-                <div class="option-label">1⭐️</div>
-                <div class="option-label">2⭐️</div>
-                <div class="option-label">3⭐️</div>
-                <div class="option-label">4⭐️</div>
-                <div class="option-label">5⭐️</div>
-            </div>
-        </div>
-
-        <!-- Вопрос 5 (НОВЫЙ) -->
-        <div class="question-card" data-required="true" data-id="q5">
-            <div class="question-text">5. Посоветуете ли вы другу наш сервис?<span class="required-star">*</span></div>
-            <div class="options-grid">
-                <div class="option-label">Да</div>
-                <div class="option-label">Нет</div>
-            </div>
-        </div>
-
-        <!-- Вопрос 6 (ПЕРЕМЕЩЕН) -->
-        <div class="question-card" data-required="false" data-id="q6">
-            <div class="question-text">6. Что нам стоит улучшить?</div>
-            <div class="sub-text">Тут вы можете рассказать все, что хотите. Например, что вам нравится в нашем сервисе или какие-то наши недостатки</div>
-            <textarea class="text-input" id="q6-text" placeholder="Ваш отзыв..."></textarea>
-        </div>
-
-        <button class="submit-btn" id="submit-btn">Отправить ответы</button>
+    <div class="theme-container">
+        <input type="checkbox" id="themeInput" class="theme-checkbox">
+        <label for="themeInput" class="theme-switch">
+            <svg class="switch-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <div class="theme-handle"></div>
+            <svg class="switch-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </label>
     </div>
 
-    <!-- ВСПЛЫВАЮЩЕЕ МОДАЛЬНОЕ ОКНО -->
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="modal-card">
-            <span class="modal-icon">❤️</span>
-            <h2 class="modal-title">Спасибо!</h2>
-            <p class="modal-text">За пройденный опрос, в течении дня, вам будет начислено до 5 дней к вашей подписке</p>
-            <button class="submit-btn" id="close-modal-btn">Закрыть</button>
+    <div id="toast" class="toast"></div>
+
+    <div class="container">
+        <header class="brand-header">
+            <h1 class="brand-title">ON1X VPN</h1>
+            <p class="brand-slogan">Отзывы</p>
+        </header>
+
+        <div class="stats-container">
+            <div class="stat-card"><h2 id="avgRating">0.0</h2><p>Рейтинг</p></div>
+            <div class="stat-card"><h2 id="totalCount">0</h2><p>Отзывов</p></div>
+        </div>
+
+        <div class="section-box" style="text-align: center; gap: 18px;">
+            <p style="font-size: 14px; font-weight: 600; color: var(--text-sub);">Ваше мнение помогает проекту становиться лучше</p>
+            <button class="btn btn-primary" id="addBtn">ОСТАВИТЬ ОТЗЫВ</button>
+        </div>
+
+        <div class="reviews-grid" id="grid"></div>
+    </div>
+
+    <div class="modal-overlay" id="overlay">
+        <div class="modal">
+            <span class="close-modal" id="closeBtn">&times;</span>
+            <h2 style="font-size: 14px; font-weight: 900; text-align: center; margin-bottom: 12px; text-transform: uppercase; color: var(--text-title);">Ваша оценка</h2>
+            
+            <div class="star-selection-area">
+                <span class="rating-num" id="ratingDisplay">5 / 5</span>
+                <div class="star-picker" id="starPicker">
+                    </div>
+            </div>
+            
+            <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
+            <input type="text" id="contactInp" placeholder="ID или @username (необязательно)" autocomplete="off">
+            <textarea id="msgInp" rows="4" placeholder="Напишите ваш отзыв..."></textarea>
+            <button class="btn btn-primary" id="saveBtn">ОПУБЛИКОВАТЬ</button>
         </div>
     </div>
 
     <script>
-        const API_URL = 'https://yvnnngfzzjdbeiscwluy.supabase.co/rest/v1/survey_results';
-        const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bm5uZ2Z6empkYmVpc2N3bHV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzY2ODYsImV4cCI6MjA5MDA1MjY4Nn0.SesGG2QhbJKfAklZDiL8oolWQ6qaTtBwRL_tvigpd9A';
-
-        function getTelegramId() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const tgid = urlParams.get('tgid');
-            return tgid ? parseInt(tgid, 10) : 0;
+        function getStarSvg(isFilled) {
+            return `
+                <svg class="brutal-star ${isFilled ? 'filled' : 'empty'}" viewBox="0 0 24 24">
+                    <path d="M12 1.7l3.09 6.26L22 8.9l-5 4.87L18.18 22 12 18.75 5.82 22 7 13.77 2 8.9l6.91-.94L12 1.7z"/>
+                </svg>
+            `;
         }
 
-        document.querySelectorAll('.question-card').forEach(card => {
-            const labels = card.querySelectorAll('.option-label');
-            labels.forEach(label => {
-                label.onclick = function() {
-                    labels.forEach(l => l.classList.remove('selected'));
-                    this.classList.add('selected');
-                    card.classList.remove('error-highlight');
-                };
-            });
+        function getStarsRowHtml(starsCount) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += getStarSvg(i <= starsCount);
+            }
+            return html;
+        }
+
+        const themeInput = document.getElementById('themeInput');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeInput.checked = true;
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeInput.checked = false;
+        }
+
+        themeInput.addEventListener('change', () => {
+            if (themeInput.checked) {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
         });
 
-        document.getElementById('submit-btn').onclick = async function() {
-            let hasErrors = false;
-            const collectedAnswers = {};
+        const SB_URL = 'https://yvnnngfzzjdbeiscwluy.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bm5uZ2Z6empkYmVpc2N3bHV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzY2ODYsImV4cCI6MjA5MDA1MjY4Nn0.SesGG2QhbJKfAklZDiL8oolWQ6qaTtBwRL_tvigpd9A';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+        
+        const grid = document.getElementById('grid');
+        const overlay = document.getElementById('overlay');
+        const closeBtn = document.getElementById('closeBtn');
+        const toast = document.getElementById('toast');
+        const ratingDisplay = document.getElementById('ratingDisplay');
+        const starPicker = document.getElementById('starPicker');
+        let currentStars = 5;
 
-            document.querySelectorAll('.question-card').forEach(card => {
-                const isRequired = card.getAttribute('data-required') === 'true';
-                const qId = card.getAttribute('data-id');
+        // Распознавание Telegram пользователя
+        const tg = window.Telegram?.WebApp;
+        if (tg?.initDataUnsafe?.user) {
+            document.getElementById('nameInp').value = tg.initDataUnsafe.user.first_name;
+        }
 
-                if (isRequired) {
-                    const selectedLabel = card.querySelector('.option-label.selected');
-                    if (!selectedLabel) {
-                        card.classList.add('error-highlight');
-                        hasErrors = true;
-                    } else {
-                        collectedAnswers[qId] = selectedLabel.innerText.trim();
-                    }
-                } else {
-                    // Текстовое поле теперь привязано к q6-text
-                    const textVal = document.getElementById('q6-text').value.trim();
-                    collectedAnswers[qId] = textVal ? textVal : null;
-                }
-            });
+        function showNotification(text, type) {
+            toast.textContent = text;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
 
-            if (hasErrors) {
-                const firstError = document.querySelector('.error-highlight');
-                if (firstError) {
-                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-                return;
-            }
-
-            const btn = document.getElementById('submit-btn');
-            btn.disabled = true;
-            btn.innerText = 'Отправка...';
-
-            const telegramId = getTelegramId();
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': ANON_KEY,
-                        'Authorization': `Bearer ${ANON_KEY}`,
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify({
-                        tgid: telegramId,
-                        q1: collectedAnswers['q1'],
-                        q2: collectedAnswers['q2'],
-                        q3: collectedAnswers['q3'],
-                        q4: collectedAnswers['q4'],
-                        q5: collectedAnswers['q5'],
-                        q6: collectedAnswers['q6']
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Ответ сервера не ок');
-                }
-
-                document.getElementById('modal-overlay').classList.add('active');
-
-            } catch (err) {
-                alert('Не удалось отправить ответы. Пожалуйста, попробуйте позже.');
-                console.error(err);
-            } finally {
-                btn.disabled = false;
-                btn.innerText = 'Отправить ответы';
-            }
+        window.expandText = (btn, id) => {
+            const textEl = document.getElementById(`text-${id}`);
+            textEl.innerText = btn.getAttribute('data-full');
+            btn.remove();
         };
 
-        document.getElementById('close-modal-btn').onclick = function() {
-            document.getElementById('modal-overlay').classList.remove('active');
-            document.querySelectorAll('.option-label').forEach(label => label.classList.remove('selected'));
+        const openModal = () => { overlay.style.display = 'flex'; };
+        const closeModal = () => { overlay.style.display = 'none'; };
+
+        document.getElementById('addBtn').addEventListener('pointerdown', openModal);
+        closeBtn.addEventListener('pointerdown', closeModal);
+        overlay.addEventListener('pointerdown', (e) => { if(e.target === overlay) closeModal(); });
+
+        function initPicker() {
+            starPicker.innerHTML = Array.from({length: 5}, (_, i) => getStarSvg(i < currentStars)).join('');
+            ratingDisplay.innerText = `${currentStars} / 5`;
             
-            const textArea = document.getElementById('q6-text');
-            if (textArea) textArea.value = '';
+            const pickerStars = starPicker.querySelectorAll('.brutal-star');
+            pickerStars.forEach((s, idx) => {
+                s.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    currentStars = idx + 1;
+                    initPicker();
+                });
+            });
+        }
+        initPicker();
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
+        async function fetchReviews() {
+            try {
+                let { data: reviews, error } = await supabaseClient
+                    .from('reviews')
+                    .select('id, name, msg, stars, created_at, admin, proverka, source')
+                    .in('proverka', [1, 2])
+                    .order('created_at', { ascending: false });
+                if (!error && reviews) {
+                    render(reviews);
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function render(data) {
+            if (!data) return;
+            grid.innerHTML = data.map((r) => {
+                const isLong = r.msg.length > 200;
+                const displayMsg = isLong ? r.msg.substring(0, 200) + '...' : r.msg;
+                
+                const dateObj = new Date(r.created_at);
+                const fullDate = `${String(dateObj.getDate()).padStart(2, '0')}.${String(dateObj.getMonth() + 1).padStart(2, '0')}.${dateObj.getFullYear()}`;
+                const sourceLabel = r.source ? ` • ${r.source}` : '';
+
+                return `
+                <div class="section-box">
+                    <div class="stars-row">${getStarsRowHtml(r.stars)}</div>
+                    <p class="review-text" id="text-${r.id}">${displayMsg}</p>
+                    ${isLong ? `<button class="read-more-btn" data-full="${r.msg.replace(/"/g, '&quot;')}" onclick="expandText(this, '${r.id}')">Читать полностью</button>` : ''}
+                    
+                    <div class="user-meta">
+                        <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
+                        <div class="username">
+                            <span>${r.name}</span>
+                            <span class="review-date">${fullDate}${sourceLabel}</span>
+                        </div>
+                    </div>
+                    ${r.admin ? `
+                        <div class="admin-reply">
+                            <span class="admin-tag">Ответ администратора</span>
+                            <div class="admin-text">${r.admin}</div>
+                        </div>
+                    ` : ''}
+                </div>`;
+            }).join('');
+            updateStats(data);
+        }
+
+        function updateStats(data) {
+            const rOnly = data.filter(r => r.proverka === 1);
+            const avg = rOnly.length > 0 ? (rOnly.reduce((s, r) => s + r.stars, 0) / rOnly.length).toFixed(1) : "0.0";
+            document.getElementById('avgRating').innerText = avg;
+            document.getElementById('totalCount').innerText = data.length;
+        }
+
+        document.getElementById('saveBtn').addEventListener('pointerdown', async () => {
+            const name = document.getElementById('nameInp').value.trim();
+            const contact = document.getElementById('contactInp').value.trim();
+            const msg = document.getElementById('msgInp').value.trim();
+            const source = tg?.initDataUnsafe?.user ? 'Telegram' : 'Сайт';
+            
+            if(!name || !msg) { showNotification("Заполните все поля", "error"); return; }
+            
+            const { error } = await supabaseClient.from('reviews').insert([{ 
+                name, 
+                contact: contact || null, 
+                msg, 
+                stars: currentStars, 
+                source: source,
+                proverka: 0 
+            }]);
+      
+            if (!error) {
+                closeModal();
+                document.getElementById('nameInp').value = '';
+                document.getElementById('contactInp').value = '';
+                document.getElementById('msgInp').value = '';
+                showNotification("Отправлено на модерацию", "success");
+            } else { showNotification("Ошибка сервера", "error"); }
+        });
+
+        fetchReviews();
     </script>
 </body>
 </html>
