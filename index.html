@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ON1X VPN — Отзывы</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
             /* Темная тема — Необрутализм (Графит + Токсичный лайм) */
@@ -46,6 +45,7 @@
             --btn-primary-text: #ffffff;
             --btn-secondary-bg: #f8fafc;
             --btn-secondary-border: #000000;
+            
             --slider-bg: #ffffff;
             --slider-thumb: #000000;
             --icon-color: #000000;
@@ -470,7 +470,34 @@
         input:focus, textarea:focus {
             border-color: var(--btn-primary-bg);
         }
+
+        input[readonly] {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .source-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border: 2px solid var(--card-border);
+            margin-top: -4px;
+        }
+
+        .source-badge.telegram {
+            background: #0088cc;
+            color: #ffffff;
+        }
+
+        .source-badge.website {
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+        }
     </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -512,11 +539,12 @@
             
             <div class="star-selection-area">
                 <span class="rating-num" id="ratingDisplay">5 / 5</span>
-                <div class="star-picker" id="starPicker"></div>
+                <div class="star-picker" id="starPicker">
+                    </div>
             </div>
             
             <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
-            <input type="text" id="contactInp" placeholder="ID или @username" autocomplete="off">
+            <input type="text" id="contactInp" placeholder="ID или @username (необязательно)" autocomplete="off">
             <textarea id="msgInp" rows="4" placeholder="Напишите ваш отзыв..."></textarea>
             <button class="btn btn-primary" id="saveBtn">ОПУБЛИКОВАТЬ</button>
         </div>
@@ -572,16 +600,7 @@
         const toast = document.getElementById('toast');
         const ratingDisplay = document.getElementById('ratingDisplay');
         const starPicker = document.getElementById('starPicker');
-        const contactInp = document.getElementById('contactInp'); // Получаем поле ID
         let currentStars = 5;
-
-        // Автоматическая подстановка Telegram ID
-        const tg = window.Telegram?.WebApp;
-        if (tg?.initDataUnsafe?.user) {
-            document.getElementById('nameInp').value = tg.initDataUnsafe.user.first_name || '';
-            contactInp.value = tg.initDataUnsafe.user.id || '';
-            contactInp.readOnly = true; // Фиксация поля
-        }
 
         // Защита исходного кода
         document.addEventListener('contextmenu', e => e.preventDefault());
@@ -602,7 +621,20 @@
             btn.remove();
         };
 
-        const openModal = () => { overlay.style.display = 'flex'; };
+        const openModal = () => {
+            overlay.style.display = 'flex';
+            const tgUser = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user;
+            const contactInp = document.getElementById('contactInp');
+            if (tgUser && tgUser.id) {
+                contactInp.value = String(tgUser.id);
+                contactInp.setAttribute('readonly', 'true');
+                contactInp.setAttribute('placeholder', 'Telegram ID (определён автоматически)');
+            } else {
+                contactInp.value = '';
+                contactInp.removeAttribute('readonly');
+                contactInp.setAttribute('placeholder', 'ID или @username (необязательно)');
+            }
+        };
         const closeModal = () => { overlay.style.display = 'none'; };
 
         document.getElementById('addBtn').addEventListener('pointerdown', openModal);
@@ -633,7 +665,7 @@
             try {
                 let { data: reviews, error } = await supabaseClient
                     .from('reviews')
-                    .select('id, name, msg, stars, created_at, admin, proverka')
+                    .select('id, name, msg, stars, created_at, admin, proverka, source')
                     .in('proverka', [1, 2])
                     .order('created_at', { ascending: false });
                 if (!error && reviews) {
@@ -667,6 +699,7 @@
                             <span>${r.name}</span>
                             <span class="review-date">${fullDate}</span>
                         </div>
+                        ${r.source ? `<span class="source-badge ${r.source === 'telegram' ? 'telegram' : 'website'}">${r.source === 'telegram' ? 'Telegram' : 'Сайт'}</span>` : ''}
                     </div>
                     ${r.admin ? `
                         <div class="admin-reply">
@@ -688,23 +721,27 @@
 
         document.getElementById('saveBtn').addEventListener('pointerdown', async () => {
             const name = document.getElementById('nameInp').value.trim();
-            const contact = contactInp.value.trim();
+            const contact = document.getElementById('contactInp').value.trim();
             const msg = document.getElementById('msgInp').value.trim();
             
             if(!name || !msg) { showNotification("Заполните все поля", "error"); return; }
+
+            const isTelegram = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user && window.Telegram.WebApp.initDataUnsafe.user.id;
+            const source = isTelegram ? 'telegram' : 'website';
             
             const { error } = await supabaseClient.from('reviews').insert([{ 
                 name, 
                 contact: contact || null, 
                 msg, 
                 stars: currentStars, 
-                proverka: 0 
+                proverka: 0,
+                source: source
             }]);
       
             if (!error) {
                 closeModal();
                 document.getElementById('nameInp').value = '';
-                // contactInp не сбрасываем, если он пришел из TG, либо можно сбросить, если нужно новое заполнение
+                document.getElementById('contactInp').value = '';
                 document.getElementById('msgInp').value = '';
                 showNotification("Отправлено на модерацию", "success");
             } else { showNotification("Ошибка сервера", "error"); }
